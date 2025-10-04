@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import prisma from "@/lib/db";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,10 +7,16 @@ export const metadata: Metadata = {
     "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi explicabo doloribus maiores modi eaque corrupti atque laborum adipisci repellat. Dolorem ratione vel minima molestiae exercitationem maxime odio amet necessitatibus neque.",
 };
 
-export default function Page() {
+export default async function Page() {
+  const [users, posts] = await Promise.all([
+    await prisma.user.findMany(),
+    await prisma.post.findMany(),
+  ]);
+
   return (
     <div>
-      <Button>Click me</Button>
+      <pre>users: {JSON.stringify(users, null, 2)}</pre>
+      <pre>posts: {JSON.stringify(posts, null, 2)}</pre>
     </div>
   );
 }
