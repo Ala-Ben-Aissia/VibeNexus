@@ -10,10 +10,11 @@ export const appRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      await inngest.send({
+      const result = await inngest.send({
         name: "test/transcript-event",
         data: { email: input.email },
       });
+      return { success: true, eventId: result.ids[0] };
     }),
   sayHello: baseProcedure
     .input(
